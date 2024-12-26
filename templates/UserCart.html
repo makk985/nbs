@@ -1,0 +1,78 @@
+<!-- templates/my_cart.html -->
+{% extends 'index.html' %}
+
+{% block content %}
+<h1>Your Cart</h1>
+
+<style>
+    .cart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+        gap: 20px; /* Space between grid items */
+    }
+
+    .cart-item {
+        border: 1px solid #ddd; /* Card border */
+        border-radius: 8px; /* Rounded corners */
+        padding: 10px; /* Padding inside the card */
+        text-align: center; /* Center text */
+        display: flex; /* Use flexbox for layout */
+        flex-direction: column; /* Stack items vertically */
+        justify-content: space-between; /* Space between items */
+        min-height: 300px; /* Set a minimum height for the card */
+    }
+
+    .product-image {
+        width: 100%; /* Make the image take the full width of the card */
+        height: auto; /* Maintain the aspect ratio */
+        object-fit: cover; /* Cover the area of the card without stretching */
+        border-radius: 5px; /* Rounded corners for the image */
+    }
+
+    .button {
+        margin-top: 10px; /* Space above buttons */
+        padding: 10px; /* Padding inside buttons */
+        border: none; /* Remove default border */
+        border-radius: 5px; /* Rounded corners for buttons */
+        cursor: pointer; /* Pointer cursor on hover */
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        width: 100%; /* Make buttons take full width of the card */
+        text-align: center; /* Center text in buttons */
+    }
+
+    .button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+    .checkout-button-container {
+        margin-top: 20px; /* Space above the checkout button */
+        text-align: center; /* Center the button */
+    }
+
+    .checkout-button {
+        background-color: black; /* Change button color to black */
+    }
+
+    .checkout-button:hover {
+        background-color: #333; /* Darker shade on hover */
+    }
+</style>
+
+{% if cart_items %}
+    <div class="cart-grid">
+        {% for item in cart_items %}
+            <div class="cart-item">
+                <img class="product-image" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                <h2>{{ item.product.name }}</h2>
+                <p>Quantity: {{ item.quantity }}</p>
+                <a href="{% url 'remove_from_cart' item.product.id %}" class="button">Remove</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="checkout-button-container"> <!-- Added a container for spacing -->
+        <button class="button checkout-button" type="button">Proceed to Checkout</button>  <!-- Updated button class -->
+    </div>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+{% endblock %}

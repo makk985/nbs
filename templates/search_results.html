@@ -1,0 +1,70 @@
+{% extends 'index.html'%}
+
+{% block content %}
+<h1>Search Results</h1>
+
+<style>
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+        gap: 20px; /* Space between grid items */
+    }
+
+    .product-card {
+        border: 1px solid #ddd; /* Card border */
+        border-radius: 8px; /* Rounded corners */
+        padding: 10px; /* Padding inside the card */
+        text-align: center; /* Center text */
+        display: flex; /* Use flexbox for layout */
+        flex-direction: column; /* Stack items vertically */
+        justify-content: space-between; /* Space between items */
+        min-height: 300px; /* Set a minimum height for the card */
+    
+    }
+
+    .product-image {
+        width: 100%; /* Make the image take the full width of the card */
+        height: auto; /* Maintain the aspect ratio */
+        object-fit: cover; /* Cover the area of the card without stretching */
+    }
+
+    .button {
+        margin-top: 10px; /* Space above buttons */
+        padding: 10px; /* Padding inside buttons */
+        border: none; /* Remove default border */
+        border-radius: 5px; /* Rounded corners for buttons */
+        cursor: pointer; /* Pointer cursor on hover */
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        width: 100%; /* Make buttons take full width of the card */
+        text-align: center; /* Center text in buttons */
+    }
+
+    .button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+</style>
+
+{% if products %}
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <h2>{{ product.name }}</h2>
+                <p>{{ product.description }}</p>
+                <p>Price: ₹{{ product.price }}</p>
+                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                 <!-- Buttons for cart actions -->
+                {% if user.is_authenticated %}
+                    <a href="{% url 'add_to_cart' product.id %}" class="button">Add </a>
+                    <a href="{% url 'remove_from_cart' product.id %}" class="button">Remove </a>
+                    <a href="{% url 'buy_now' product.id }" class="button">Buy Now</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="button">Login to Add to Cart</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No products found for your search query: "{{ query }}"</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBS</title>
+    <!-- Adding some basic styles in the head section -->
+    <style>
+        /* Reset default margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Style the main container */
+        .container {
+            /* Center content vertically and horizontally */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* Make container full height of viewport */
+            min-height: 100vh;
+            /* Add some padding */
+            padding: 20px;
+        }
+
+        /* Add new styles for transitioning text */
+        .transition-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        /* Style for each character */
+        .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateX(-50px);
+            margin-right: -1px;
+            animation: slideInFromLeft 0.25s ease forwards;
+            animation-delay: calc(0.1s * var(--char-index));
+        }
+
+
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Style the search form */
+        .search-form {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        /* Style the search input */
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+        }
+
+        /* Style the search button */
+        .search-button {
+            margin-top: 15px;
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: black;
+        }
+
+        /* Add new styles for the navigation */
+        .nav-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav-button {
+            padding: 8px 20px;
+            font-size: 16px;
+            border: 2px solid black;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .login-button {
+            background-color: transparent;
+            color: black;
+        }
+
+        .login-button:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .signup-button {
+            background-color: black;
+            color: white;
+        }
+
+        .signup-button:hover {
+            background-color: #333;
+        }
+
+        /* Add new style for seller dashboard button */
+        .dashboard-button {
+            background-color: transparent;
+            color: black;
+            border: 2px dashed black;
+        }
+
+        .dashboard-button:hover {
+            background-color: #f0f0f0;
+            border-style: solid;
+        }
+        .nav-button-container {
+        position: relative; /* Position relative for absolute positioning of dropdown */
+    }
+
+    .dropdown-menu {
+        display: none; /* Hide the dropdown by default */
+        position: absolute; /* Position it absolutely */
+        top: 100%; /* Position it below the button */
+        right: 0; /* Align it to the right */
+        background-color: white; /* Background color */
+        border: 1px solid #ddd; /* Border for the dropdown */
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+        z-index: 1000; /* Ensure it appears above other elements */
+    }
+
+    .nav-button-container:hover .dropdown-menu {
+        display: block; /* Show the dropdown on hover */
+    }
+
+    .dropdown-item {
+        display: block; /* Make items block elements */
+        padding: 10px 15px; /* Padding for items */
+        text-decoration: none; /* Remove underline */
+        color: black; /* Text color */
+    }
+
+    .dropdown-item:hover {
+        background-color: #f0f0f0; /* Change background on hover */
+    }
+    </style>
+</head>
+<body>
+    <!-- Add navigation buttons before the container -->
+    
+<div class="nav-buttons">
+    {% if is_authenticated %}
+        {% if is_seller %}
+            <a href="{% url 'seller_dashboard' %}" class="nav-button dashboard-button">Seller Dashboard</a>
+       
+        {% endif %}
+        <div class="nav-button-container">
+            <a href="{% url 'profile' %}" class="nav-button login-button">{{user.first_name}}</a>
+            <div class="dropdown-menu">
+                <!-- Change the anchor tag to a button element -->
+                <button class="dropdown-item" type="button">My Profile</button>
+                <a href="{% url 'my_cart' %}" class="dropdown-item">My Cart</a>
+            </div>
+        </div>
+        <a href="{% url 'logout' %}" class="nav-button signup-button">Logout</a>
+    {% else %}
+        
+        <a href="{% url 'login' %}" class="nav-button login-button">Login</a>
+        <a href="{% url 'signup' %}" class="nav-button signup-button">Sign Up</a>
+        <a href="{% url 'seller_login' %}" class="nav-button dashboard-button">Seller's Dashboard</a>
+        
+    {% endif %}
+</div>
+{%block content%}
+        
+    <div class="container">
+        <!-- Updated transition text with new message -->
+        <div class="transition-text">
+            <span class="char" style="--char-index: 1;">N</span>
+            <span class="char" style="--char-index: 2;">o</span>
+            <span class="char" style="--char-index: 3;">&nbsp;</span>
+            <span class="char" style="--char-index: 4;">b</span>
+            <span class="char" style="--char-index: 5;">u</span>
+            <span class="char" style="--char-index: 6;">l</span>
+            <span class="char" style="--char-index: 7;">l</span>
+            <span class="char" style="--char-index: 8;">s</span>
+            <span class="char" style="--char-index: 9;">h</span>
+            <span class="char" style="--char-index: 10;">t</span>
+            <span class="char" style="--char-index: 11;">*</span>
+            <span class="char" style="--char-index: 12;">t</span>
+            <span class="char" style="--char-index: 13;">&nbsp;</span>
+            <span class="char" style="--char-index: 14;">s</span>
+            <span class="char" style="--char-index: 15;">h</span>
+            <span class="char" style="--char-index: 16;">o</span>
+            <span class="char" style="--char-index: 17;">p</span>
+            <span class="char" style="--char-index: 18;">p</span>
+            <span class="char" style="--char-index: 19;">i</span>
+            <span class="char" style="--char-index: 20;">n</span>
+            <span class="char" style="--char-index: 21;">g</span>
+            <span class="char" style="--char-index: 22;">&nbsp;</span>
+            <span class="char" style="--char-index: 23;">a</span>
+            <span class="char" style="--char-index: 24;">p</span>
+            <span class="char" style="--char-index: 25;">p</span>
+        </div>
+        <!-- Search form -->
+        <form class="search-form" action="{% url 'search_results' %}" method="GET">
+            <input 
+                type="text" 
+                name="q" 
+                class="search-input" 
+                placeholder="Search what you want..."
+                autocomplete="off"
+            >
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}
