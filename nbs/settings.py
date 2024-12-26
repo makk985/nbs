@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
 
-DEBUG = os.environ.get('DEBUG') 
+DEBUG = os.environ.get('DEBUG')=='True'
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
@@ -44,7 +44,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 
 # Application definition
