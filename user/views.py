@@ -113,7 +113,7 @@ def login_view(request):
             return redirect('index')  # Replace 'home' with your home page URL name
         else:
             messages.error(request, 'Invalid email or password')
-            return redirect('login')
+            return render(request, 'login.html', {'error': 'Invalid email or password'})
     
     return render(request, 'login.html')
 
