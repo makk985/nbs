@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+python -m venv venv
+source venv/bin/activate
 # Exit on error
 set -o errexit
 
@@ -10,4 +13,5 @@ python manage.py collectstatic --no-input
 
 # Apply any outstanding database migrations
 python manage.py makemigrations
+python manage.py migrate auth
 python manage.py migrate
